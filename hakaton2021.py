@@ -13,7 +13,7 @@ from sqlalchemy import create_engine
 TRAINFILE = r'/mnt/c/temp/hakaton/train_data.csv'
 PREDFILE = r'/mnt/c/temp/hakaton/pred_data.csv'
 RESFILE = r'/mnt/c/temp/hakaton/result_data.csv'
-INDEXCOL = 'segment'
+INDEXCOL = 'id'
 RESULTCOL = 'segment'
 
 engine = create_engine('postgresql://postgres:qwe123q@localhost:65432/hakaton', encoding='utf-8')
@@ -23,18 +23,31 @@ if True:
     with engine.connect() as con:
         con.execute("""drop table if exists all_data""")
         con.execute("""create table all_data as
-    select distinct segment, lower(coalesce(gamecategory,'')||'|'||coalesce(subgamecategory,'')) game
-    , lower(array_to_string(tsvector_to_array(to_tsvector(
-        replace(regexp_replace(
-        regexp_replace(
-        replace(bundle,'com.','')
-        ,'([A-Z])','.\1','g')
-        ,'\.{2,}','.','g'),'.',' ')
-    )),'|')) app
-    , extract(hour from created)||'|'||extract(dow from created)||'|'||extract(month from created) date
-    , lower(coalesce(city,oblast,'')) geo
-    , lower(coalesce(os,'')||'|'||coalesce(osv,'')) dev
+with sta as (
+    select segment
+         , count(1) over (partition by lower(coalesce(gamecategory, '')))                   gamecat
+         , count(1) over (partition by lower(coalesce(subgamecategory, '')))                game
+         , tsvector_to_array(to_tsvector(
+            replace(regexp_replace(
+                            regexp_replace(
+                                    replace(bundle, 'com.', '')
+                                , '([A-Z])', '.\1', 'g')
+                        , '\.{2,}', '.', 'g'), '.', ' ')
+        ))                                                                                  app
+         , extract(hour from created)                                                       hourc
+         , extract(dow from created)                                                        dowc
+         , extract(month from created)                                                      monthc
+         , count(1) over (partition by lower(coalesce(city, oblast, '')))                   geo
+         , count(1) over (partition by lower(coalesce(os, '') || '|' || coalesce(osv, ''))) dev
     from train
+)
+select row_number() over () id, gamecat, game, hourc, dowc, monthc, geo
+        , count(1) over (partition by app[1]) app1
+        , count(1) over (partition by coalesce(app[2], app[1])) app2
+        , count(1) over (partition by coalesce(app[3], app[2], app[1])) app3
+        , count(1) over (partition by coalesce(app[4], app[3], app[2], app[1])) app4
+        , segment
+       from sta
            """ )
         con.execute("""drop table if exists train_data""")
         con.execute("""create table train_data as select * from all_data tablesample system(90) repeatable (1)""")
@@ -48,11 +61,11 @@ if True:
 
 alldata = pd.read_csv(TRAINFILE, index_col=INDEXCOL)
 cols = list(alldata.columns)
-train_cols = ['game', 'app', 'date', 'geo', 'dev']
-test_vals = ['games|word','fugo|wow','19|2|7','нальчик','android|11.0']
+train_cols = cols[:-1]
+test_vals = [14,1427,10,5,7,31,1,1,1,1]
 clft = RandomForestClassifier(max_depth=22)
 clfa = DecisionTreeClassifier(max_depth=None, min_samples_leaf=55, criterion='entropy')
-class_col = cols[-2]
+class_col = cols[-1]
 
 X = alldata.loc[:, train_cols]
 print('=== TRAIN DATASET: %s  =====\n\n' % X)
