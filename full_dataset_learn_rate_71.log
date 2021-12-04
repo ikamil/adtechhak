@@ -1,0 +1,91 @@
+C:\windows\system32\wsl.exe --distribution Ubuntu --exec /bin/sh -c "export PYCHARM_DISPLAY_PORT=63342 && export PYDEVD_LOAD_VALUES_ASYNC=True && export PYTHONPATH='/mnt/c/cloud/dev/PycharmProjects/mfc_challange:/mnt/c/Program Files/JetBrains/PyCharm 2021.3/plugins/python/helpers/pycharm_matplotlib_backend:/mnt/c/Program Files/JetBrains/PyCharm 2021.3/plugins/python/helpers/pycharm_display:/mnt/c/Program Files/JetBrains/PyCharm 2021.3/plugins/python/helpers/third_party/thriftpy:/mnt/c/Program Files/JetBrains/PyCharm 2021.3/plugins/python/helpers/pydev' && export PYCHARM_MATPLOTLIB_INTERACTIVE=true && export PYTHONUNBUFFERED=1 && export PYTHONIOENCODING=UTF-8 && export PYCHARM_HOSTED=1 && export IPYTHONENABLE=True && export PYCHARM_MATPLOTLIB_INDEX=0 && cd /mnt/c/cloud/dev/PycharmProjects/mfc_challange && /usr/bin/python3 '/mnt/c/Program Files/JetBrains/PyCharm 2021.3/plugins/python/helpers/pydev/pydevconsole.py' --mode=server"
+import sys; print('Python %s on %s' % (sys.version, sys.platform))
+sys.path.extend(['/mnt/c/cloud/dev/PycharmProjects/mfc_challange', '/mnt/c/cloud/dev/PycharmProjects/mfc_challange'])
+PyDev console: starting.
+Python 3.8.10 (default, Sep 28 2021, 16:10:42) 
+[GCC 9.3.0] on linux
+runfile('/mnt/c/cloud/dev/PycharmProjects/mfc_challange/hakaton2021.py', wdir='/mnt/c/cloud/dev/PycharmProjects/mfc_challange')
+===  Preparing data using SQL ===
+=== Finished SQL Data prepare ===
+=== TRAIN DATASET:            gamecat      game  hourc  dowc  ...   app1   app2   app3   app4
+id                                         ...                            
+30592322  16961331  16968425     21     1  ...      7      2      2      2
+31900740  16961331  16968425      5     4  ...      7      4      1      1
+34617360  16961331  16968425      3     2  ...      7      2      2      2
+26104921  24555534   1276408     10     5  ...      7      7      1      2
+16138105  16961331  16968425      8     5  ...      7      7     21      5
+            ...       ...    ...   ...  ...    ...    ...    ...    ...
+2771457   16961331  16968425      2     0  ...  39846  39846  39846  39846
+39837001  16961331  16968425     22     6  ...  39846  39846  39846  39846
+37722744  16961331  16968425     10     3  ...  39846  39846  39846  39846
+3584786   16961331  16968425     15     4  ...  39846  39846  39846  39846
+41768660  16961331  16968425     17     2  ...  39846  39846  39846  39846
+[40378940 rows x 10 columns]  =====
+---- Predicting Dataset:            gamecat      game  hourc  dowc  ...   app1   app2   app3   app4
+id                                         ...                            
+22270267  16961331  16968425     20     6  ...   5148   5333  21693   5249
+6514626   16961331  16968425     19     0  ...   5148   5333  21693   5249
+30717138  16961331  16968425     19     6  ...   5148   5333  21693   5249
+4503988   16961331  16968425      7     5  ...   5148   5333  21693   5249
+19359292  16961331  16968425      6     1  ...   5148   5333  21693   5249
+            ...       ...    ...   ...  ...    ...    ...    ...    ...
+21064900  24555534   2757136      7     6  ...  39846  39846  39846  39846
+138859    24555534   2757136     20     1  ...  39846  39846  39846  39846
+624994    24555534   2757136     20     5  ...  39846  39846  39846  39846
+1084111   24555534   2757136      5     6  ...  39846  39846  39846  39846
+14270097  24555534   2757136      5     5  ...  39846  39846  39846  39846
+[4471110 rows x 10 columns] -----
+=== Start Train Meth1 for 35907830 ===
+=== Finished  ==== 
+=== Start Train Meth2 for 35907830 ===
+=== Finished  ==== 
+=== Start Predict Score for Meth1 ===
+=== Start Predict Score for Meth2 ===
+/home/kam/.local/lib/python3.8/site-packages/sklearn/base.py:445: UserWarning: X does not have valid feature names, but RandomForestClassifier was fitted with feature names
+  warnings.warn(
+/home/kam/.local/lib/python3.8/site-packages/sklearn/base.py:445: UserWarning: X does not have valid feature names, but DecisionTreeClassifier was fitted with feature names
+  warnings.warn(
+!!!---- got self Score with Methods: 0.7074916519611462 and 0.7088188391696917 
+ for ['gamecat', 'game', 'hourc', 'dowc', 'monthc', 'geo', 'app1', 'app2', 'app3', 'app4'] columns and 35907830 records, samples: [3] and [3] ----==== !!!
+****  RESULTDT:             gamecat      game  hourc  dowc  ...   app2   app3   app4  segment
+id                                         ...                              
+22270267  16961331  16968425     20     6  ...   5333  21693   5249        4
+6514626   16961331  16968425     19     0  ...   5333  21693   5249        4
+30717138  16961331  16968425     19     6  ...   5333  21693   5249        4
+4503988   16961331  16968425      7     5  ...   5333  21693   5249        5
+19359292  16961331  16968425      6     1  ...   5333  21693   5249        4
+            ...       ...    ...   ...  ...    ...    ...    ...      ...
+21064900  24555534   2757136      7     6  ...  39846  39846  39846        5
+138859    24555534   2757136     20     1  ...  39846  39846  39846        4
+624994    24555534   2757136     20     5  ...  39846  39846  39846        3
+1084111   24555534   2757136      5     6  ...  39846  39846  39846        5
+14270097  24555534   2757136      5     5  ...  39846  39846  39846        5
+[4471110 rows x 11 columns]  *****
+****  RESULTDA:          segment  gamecategory  ...       os     osv
+id                             ...                 
+50905         4         Games  ...  android     9.0
+107336        1         Games  ...  android     9.0
+107820        5         Games  ...  android     9.0
+107953        4         Games  ...  android   8.1.0
+109681        3           NaN  ...  android  10.0.0
+         ...           ...  ...      ...     ...
+45158         5         Games  ...  android   8.1.0
+45186         2           NaN  ...  android  11.0.0
+46432         5         Games  ...  android     7.1
+47556         5         Games  ...  android    10.0
+50495         4  Applications  ...  android   4.4.4
+[4471110 rows x 10 columns]  *****
+****  RESULT:          segment  gamecategory  ...     osv segment_predict
+id                             ...                        
+50905         4         Games  ...     9.0               4
+107336        1         Games  ...     9.0               3
+107820        5         Games  ...     9.0               5
+107953        4         Games  ...   8.1.0               4
+109681        3           NaN  ...  10.0.0               3
+         ...           ...  ...     ...             ...
+45158         5         Games  ...   8.1.0               5
+45186         2           NaN  ...  11.0.0               3
+46432         5         Games  ...     7.1               5
+47556         5         Games  ...    10.0               5
+50495         4  Applications  ...   4.4.4               3
+[4471110 rows x 11 columns]  *****
